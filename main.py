@@ -10,10 +10,6 @@ def cooking(url):
     return BeautifulSoup(response.text, 'lxml')
 
 
-exeption = [
-    '/document/cons_doc_LAW_371232/',
-    '/document/cons_doc_LAW_315739/',
-    '/document/cons_doc_LAW_32451/94b17bafb57578dce2b04c8941777f7b2b7922cb/']
 soup = cooking('https://www.consultant.ru/popular/')
 time.sleep(2)
 rules = [x.text for x in soup.find('div', id='content').find_all('h3')]
@@ -23,11 +19,7 @@ for name_1, block in zip(rules, blockquotes):
     print(name_1, '  ***')
     result[name_1] = {}
     links = block.find_all('a')
-    result[name_1] = {}
-    links = block.find_all('a')
     for link in links:
-        if link in exeption:
-            continue
         name_2 = link.text
         print(name_2, '|2')
         result[name_1][name_2] = {}
@@ -87,7 +79,7 @@ for name_1, block in zip(rules, blockquotes):
                         print(f'{name_3} больше не актуальна')
                         result[name_1][name_2][name_3] = soup.find('div', class_='document__style doc-style').text
             section_1 = section_1.next_sibling
-    with open('rules.json', 'w', encoding='utf-8') as file:
+    with open(f'{name_1}.json', 'w', encoding='utf-8') as file:
         json.dump(result, file, indent=4, ensure_ascii=False)
         print('Готово!')
 
