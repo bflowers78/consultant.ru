@@ -69,58 +69,64 @@ for name_1, block in zip(rules, blockquotes):
         print(name_2)
         result_new[name_1][name_2] = {}
         soup = cooking(f'https://www.consultant.ru/{link["href"]}')
-        section_1 = soup.find('div', class_='document-page__toc').find('li')
-        show = [x.text for x in section_1]
-        while section_1:
-            if section_1.name == 'li':
-                name_3 = section_1.find('a').text
-                print(name_3)
-                result_new[name_1][name_2][name_3] = {}
-                try:
-                    link_2 = section_1.find('a')['href']
-                    soup = cooking(f"https://www.consultant.ru/{link_2}")
-                    section_2 = soup.find('div', class_='document-page__toc').find_all('li')
-                    for el2 in section_2:
-                        name_4 = el2.find('a').text
-                        print(name_4)
-                        result_new[name_1][name_2][name_3][name_4] = {}
-                        try:
-                            link_3 = el2.find('a')['href']
-                            soup = cooking(f"https://www.consultant.ru/{link_3}")
-                            section_3 = soup.find('div', class_='document-page__toc').find_all('li')
-                            for el3 in section_3:
-                                name_5 = el3.find('a').text
-                                print(name_5)
-                                result_new[name_1][name_2][name_3][name_4][name_5] = {}
-                                try:
-                                    link_4 = el3.find('a')['href']
-                                    soup = cooking(f"https://www.consultant.ru/{link_4}")
-                                    section_4 = soup.find('div', class_='document-page__toc').find_all('li')
-                                    for el4 in section_4:
-                                        name_6 = el4.find('a').text
-                                        print(name_6)
-                                        result_new[name_1][name_2][name_3][name_4][name_5][name_6] = {}
-                                        soup = cooking(f"https://www.consultant.ru/{el4.find('a')['href']}")
-                                        result_new[name_1][name_2][name_3][name_4][name_5][name_6] = [soup.find('div', class_='document-page__content document-page_left-padding').text.split('\n\n')[-2], f"https://www.consultant.ru/{el4.find('a')['href']}"]
-                                except Exception as err:
-                                    try:
-                                        result_new[name_1][name_2][name_3][name_4][name_5] = [soup.find('div', class_='document-page__content document-page_left-padding').text.split('\n\n')[-2], f"https://www.consultant.ru/{link_4}"]
-                                    except Exception as err:
-                                        print(f'{name_5} больше не актуальна')
-                                        result_new[name_1][name_2][name_3][name_4][name_5] = [soup.find('div', class_='document__style doc-style').text, f"https://www.consultant.ru/{link_4}"]
-                        except Exception as err:
-                            try:
-                                result_new[name_1][name_2][name_3][name_4] = [soup.find('div', class_='document-page__content document-page_left-padding').text.split('\n\n')[-2], f"https://www.consultant.ru/{link_3}"]
-                            except Exception as err:
-                                print(f'{name_4} больше не актуальна')
-                                result_new[name_1][name_2][name_3][name_4] = [soup.find('div', class_='document__style doc-style').text, f"https://www.consultant.ru/{link_3}"]
-                except Exception as err:
+        try:
+            section_1 = soup.find('div', class_='document-page__toc').find('li')
+            show = [x.text for x in section_1]
+            while section_1:
+                if section_1.name == 'li':
+                    name_3 = section_1.find('a').text
+                    print(name_3)
+                    result_new[name_1][name_2][name_3] = {}
                     try:
-                        result_new[name_1][name_2][name_3] = [soup.find('div', class_='document-page__content document-page_left-padding').text.split('\n\n')[-2], f"https://www.consultant.ru/{link_2}"]
+                        link_2 = section_1.find('a')['href']
+                        soup = cooking(f"https://www.consultant.ru/{link_2}")
+                        section_2 = soup.find('div', class_='document-page__toc').find_all('li')
+                        for el2 in section_2:
+                            name_4 = el2.find('a').text
+                            print(name_4)
+                            result_new[name_1][name_2][name_3][name_4] = {}
+                            try:
+                                link_3 = el2.find('a')['href']
+                                soup = cooking(f"https://www.consultant.ru/{link_3}")
+                                section_3 = soup.find('div', class_='document-page__toc').find_all('li')
+                                for el3 in section_3:
+                                    name_5 = el3.find('a').text
+                                    print(name_5)
+                                    result_new[name_1][name_2][name_3][name_4][name_5] = {}
+                                    try:
+                                        link_4 = el3.find('a')['href']
+                                        soup = cooking(f"https://www.consultant.ru/{link_4}")
+                                        section_4 = soup.find('div', class_='document-page__toc').find_all('li')
+                                        for el4 in section_4:
+                                            name_6 = el4.find('a').text
+                                            print(name_6)
+                                            result_new[name_1][name_2][name_3][name_4][name_5][name_6] = {}
+                                            soup = cooking(f"https://www.consultant.ru/{el4.find('a')['href']}")
+                                            result_new[name_1][name_2][name_3][name_4][name_5][name_6] = [soup.find('div', class_='document-page__content document-page_left-padding').text.split('\n\n')[-2], f"https://www.consultant.ru/{el4.find('a')['href']}"]
+                                    except Exception as err:
+                                        try:
+                                            result_new[name_1][name_2][name_3][name_4][name_5] = [soup.find('div', class_='document-page__content document-page_left-padding').text.split('\n\n')[-2], f"https://www.consultant.ru/{link_4}"]
+                                        except Exception as err:
+                                            print(f'{name_5} больше не актуальна')
+                                            result_new[name_1][name_2][name_3][name_4][name_5] = [soup.find('div', class_='document__style doc-style').text, f"https://www.consultant.ru/{link_4}"]
+                            except Exception as err:
+                                try:
+                                    result_new[name_1][name_2][name_3][name_4] = [soup.find('div', class_='document-page__content document-page_left-padding').text.split('\n\n')[-2], f"https://www.consultant.ru/{link_3}"]
+                                except Exception as err:
+                                    print(f'{name_4} больше не актуальна')
+                                    result_new[name_1][name_2][name_3][name_4] = [soup.find('div', class_='document__style doc-style').text, f"https://www.consultant.ru/{link_3}"]
                     except Exception as err:
-                        print(f'{name_3} больше не актуальна')
-                        result_new[name_1][name_2][name_3] = [soup.find('div', class_='document__style doc-style').text, f"https://www.consultant.ru/{link_2}"]
-            section_1 = section_1.next_sibling
+                        try:
+                            result_new[name_1][name_2][name_3] = [soup.find('div', class_='document-page__content document-page_left-padding').text.split('\n\n')[-2], f"https://www.consultant.ru/{link_2}"]
+                        except Exception as err:
+                            print(f'{name_3} больше не актуальна')
+                            result_new[name_1][name_2][name_3] = [soup.find('div', class_='document__style doc-style').text, f"https://www.consultant.ru/{link_2}"]
+                section_1 = section_1.next_sibling
+        except Exception as err:
+            with open('result.json', 'r', encoding='utf-8') as file:
+                gag_dict = json.load(file)
+            result_new[name_1][name_2] = gag_dict[name_1][name_2]
+            print(err)
 print('Чтение старого файла')
 with open('result.json', 'r', encoding='utf-8') as file:
     result_old = json.load(file)
